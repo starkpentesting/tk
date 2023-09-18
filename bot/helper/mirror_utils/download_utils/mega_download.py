@@ -2,6 +2,7 @@
 from secrets import token_urlsafe
 from aiofiles.os import makedirs
 from asyncio import Event
+import random
 
 from aiofiles.os import makedirs
 from mega import MegaApi, MegaError, MegaListener, MegaRequest, MegaTransfer
@@ -127,8 +128,14 @@ class AsyncExecutor:
 
 
 async def add_mega_download(mega_link, path, listener, name):
-    MEGA_EMAIL = config_dict['MEGA_EMAIL']
-    MEGA_PASSWORD = config_dict['MEGA_PASSWORD']
+
+    with open("./emails.txt", "r") as file:
+        email_text = file.read()
+    email_ids = email_text.split("\n")
+    email_ids = [email for email in email_ids if email.strip() != ""]
+  
+    MEGA_EMAIL = random.choice(email_ids)
+    MEGA_PASSWORD = "stark2004!"
 
     executor = AsyncExecutor()
     api = MegaApi(None, None, None, 'Z-Mirror')
