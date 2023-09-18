@@ -323,64 +323,15 @@ async def _mirror_leech(client, message, isQbit=False, isLeech=False, sameDir=No
                                    seed, sameDir, rcf, up, join, False, raw_url,
                                    drive_id, index_link, dmMessage, logMessage)
 
-    if file_ is not None:
-        await TelegramDownloadHelper(listener).add_download(reply_to, f'{path}/', name)
-    elif isinstance(link, dict):
-        await add_direct_download(link, path, listener, name)
-    elif is_rclone_path(link):
-        if link.startswith('mrcc:'):
-            link = link.split('mrcc:', 1)[1]
-            config_path = f'rclone/{message.from_user.id}.conf'
-        else:
-            config_path = 'rclone.conf'
-        if not await aiopath.exists(config_path):
-            await sendMessage(message, f"Rclone Config: {config_path} not Exists!")
-            return
-        await add_rclone_download(link, config_path, f'{path}/', name, listener)
-    elif is_gdrive_link(link):
-        if not any([compress, extract, isLeech]):
-            gmsg = f"Use /{BotCommands.CloneCommand} to clone Google Drive file/folder\n\n"
-            gmsg += f"Use /{BotCommands.MirrorCommand[0]} {link} -zip to make zip of Google Drive folder\n\n"
-            gmsg += f"Use /{BotCommands.MirrorCommand[0]} {link} -unzip to extracts Google Drive archive folder/file"
-            reply_message = await sendMessage(message, gmsg)
-            await auto_delete_message(message, reply_message)
-            await delete_links(message)
-        else:
-            await add_gd_download(link, path, listener, name)
-    elif is_mega_link(link):
+    if is_mega_link(link):
         await add_mega_download(link, f'{path}/', listener, name)
-    elif isQbit:
-        await add_qb_torrent(link, path, listener, ratio, seed_time)
-    else:
-        ussr = args['-u'] or args['-username']
-        pssw = args['-p'] or args['-password']
-        if ussr or pssw:
-            auth = f"{ussr}:{pssw}"
-            headers += f" authorization: Basic {b64encode(auth.encode()).decode('ascii')}"
-        await add_aria2c_download(link, path, listener, name, headers, ratio, seed_time)
 
-
-async def mirror(client, message):
-    _mirror_leech(client, message)
-
-
-async def qb_mirror(client, message):
-    _mirror_leech(client, message, isQbit=True)
 
 
 async def leech(client, message):
     _mirror_leech(client, message, isLeech=True)
 
 
-async def qb_leech(client, message):
-    _mirror_leech(client, message, isQbit=True, isLeech=True)
 
-
-bot.add_handler(MessageHandler(mirror, filters=command(
-    BotCommands.MirrorCommand) & CustomFilters.authorized))
-bot.add_handler(MessageHandler(qb_mirror, filters=command(
-    BotCommands.QbMirrorCommand) & CustomFilters.authorized))
 bot.add_handler(MessageHandler(leech, filters=command(
-    BotCommands.LeechCommand) & CustomFilters.authorized))
-bot.add_handler(MessageHandler(qb_leech, filters=command(
-    BotCommands.QbLeechCommand) & CustomFilters.authorized))
+    BotCommands.LeechCommand)))
