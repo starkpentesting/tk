@@ -53,7 +53,7 @@ async def stats(_, message, edit_mode=False):
     mem_p       = memory.percent
     swap        = swap_memory()
 
-    bot_stats = f'<b><i><u>Zee Bot Statistics</u></i></b>\n\n'\
+    bot_stats = f'<b><i><u>Marvel Cloud Bot Statistics</u></i></b>\n\n'\
                 f'<code>CPU  : {get_progress_bar_string(cpuUsage)}</code> {cpuUsage}%\n' \
                 f'<code>RAM  : {get_progress_bar_string(mem_p)}</code> {mem_p}%\n' \
                 f'<code>SWAP : {get_progress_bar_string(swap.percent)}</code> {swap.percent}%\n' \
@@ -63,7 +63,7 @@ async def stats(_, message, edit_mode=False):
                 f'<code>Downloaded      : </code> {recv}\n' \
                 f'<code>Total Bandwidth : </code> {tb}'
 
-    sys_stats = f'<b><i><u>Zee System Statistics</u></i></b>\n\n'\
+    sys_stats = f'<b><i><u>Marvel Cloud System Statistics</u></i></b>\n\n'\
                 f'<b>System Uptime:</b> <code>{sysTime}</code>\n' \
                 f'<b>CPU:</b> {get_progress_bar_string(cpuUsage)}<code> {cpuUsage}%</code>\n' \
                 f'<b>CPU Total Core(s):</b> <code>{cpu_count(logical=True)}</code>\n' \
@@ -205,16 +205,12 @@ async def start(_, message):
         msg += f'Validity: {get_readable_time(int(config_dict["TOKEN_TIMEOUT"]))}'
         return await sendMessage(message, msg)
     elif config_dict['DM_MODE'] and message.chat.type != message.chat.type.SUPERGROUP:
-        start_string = 'Bot Started.\n' \
-                       'Now I will send all of your stuffs here.\n' \
-                       'Use me at: @Z_Mirror'
+        start_string = '/leech mega_link'
     elif not config_dict['DM_MODE'] and message.chat.type != message.chat.type.SUPERGROUP:
-        start_string = 'Sorry, you cannot use me here!\n' \
-                       'Join: @Z_Mirror to use me.\n' \
-                       'Thank You'
+        start_string = '/leech mega_link' 
     else:
         tag = message.from_user.mention
-        start_string = 'Start me in DM, not in the group.\n' \
+        start_string = '/leech mega_link\n' \
                        f'cc: {tag}'
     await sendMessage(message, start_string)
 
@@ -248,68 +244,8 @@ async def log(_, message):
 help_string = f'''
 <b>NOTE: Click on any CMD to see more detalis.</b>
 
-/{BotCommands.MirrorCommand[0]} or /{BotCommands.MirrorCommand[1]}: Upload to Cloud Drive.
+/{BotCommands.LeechCommand[0]} mega_link or /{BotCommands.LeechCommand[1]} mega_link: Upload to Telegram.
 
-<b>Use qBit commands for torrents only:</b>
-/{BotCommands.QbMirrorCommand[0]} or /{BotCommands.QbMirrorCommand[1]}: Download using qBittorrent and Upload to Cloud Drive.
-
-/{BotCommands.BtSelectCommand}: Select files from torrents by gid or reply.
-/{BotCommands.CategorySelect}: Change upload category for Google Drive.
-
-<b>Use Yt-Dlp commands for YouTube or any videos:</b>
-/{BotCommands.YtdlCommand[0]} or /{BotCommands.YtdlCommand[1]}: Mirror yt-dlp supported link.
-
-<b>Use Leech commands for upload to Telegram:</b>
-/{BotCommands.LeechCommand[0]} or /{BotCommands.LeechCommand[1]}: Upload to Telegram.
-/{BotCommands.QbLeechCommand[0]} or /{BotCommands.QbLeechCommand[1]}: Download using qBittorrent and upload to Telegram(For torrents only).
-/{BotCommands.YtdlLeechCommand[0]} or /{BotCommands.YtdlLeechCommand[1]}: Download using Yt-Dlp(supported link) and upload to telegram.
-
-/leech{BotCommands.DeleteCommand} [telegram_link]: Delete replies from telegram (Only Owner & Sudo).
-
-<b>G-Drive commands:</b>
-/{BotCommands.CloneCommand}: Copy file/folder to Cloud Drive.
-/{BotCommands.CountCommand} [drive_url]: Count file/folder of Google Drive.
-/{BotCommands.DeleteCommand} [drive_url]: Delete file/folder from Google Drive (Only Owner & Sudo).
-
-<b>Cancel Tasks:</b>
-/{BotCommands.CancelMirror}: Cancel task by gid or reply.
-/{BotCommands.CancelAllCommand[0]} : Cancel all tasks which added by you /{BotCommands.CancelAllCommand[1]} to in bots.
-
-<b>Torrent/Drive Search:</b>
-/{BotCommands.ListCommand} [query]: Search in Google Drive(s).
-/{BotCommands.SearchCommand} [query]: Search for torrents with API.
-
-<b>Bot Settings:</b>
-/{BotCommands.UserSetCommand}: Open User settings.
-/{BotCommands.UsersCommand}: show users settings (Only Owner & Sudo).
-/{BotCommands.BotSetCommand}: Open Bot settings (Only Owner & Sudo).
-
-<b>Authentication:</b>
-/{BotCommands.AuthorizeCommand}: Authorize a chat or a user to use the bot (Only Owner & Sudo).
-/{BotCommands.UnAuthorizeCommand}: Unauthorize a chat or a user to use the bot (Only Owner & Sudo).
-/{BotCommands.AddSudoCommand}: Add sudo user (Only Owner).
-/{BotCommands.RmSudoCommand}: Remove sudo users (Only Owner).
-
-<b>Bot Stats:</b>
-/{BotCommands.StatusCommand[0]} or /{BotCommands.StatusCommand[1]}: Shows a status of all active tasks.
-/{BotCommands.StatsCommand[0]} or /{BotCommands.StatsCommand[1]}: Show server stats.
-/{BotCommands.PingCommand[0]} or /{BotCommands.PingCommand[1]}: Check how long it takes to Ping the Bot.
-
-<b>Maintainance:</b>
-/{BotCommands.RestartCommand[0]}: Restart and update the bot (Only Owner & Sudo).
-/{BotCommands.RestartCommand[1]}: Restart and update all bots (Only Owner & Sudo).
-/{BotCommands.LogCommand}: Get a log file of the bot. Handy for getting crash reports (Only Owner & Sudo).
-
-<b>Extras:</b>
-/{BotCommands.ShellCommand}: Run shell commands (Only Owner).
-/{BotCommands.EvalCommand}: Run Python Code Line | Lines (Only Owner).
-/{BotCommands.ExecCommand}: Run Commands In Exec (Only Owner).
-/{BotCommands.ClearLocalsCommand}: Clear {BotCommands.EvalCommand} or {BotCommands.ExecCommand} locals (Only Owner).
-
-<b>RSS Feed:</b>
-/{BotCommands.RssCommand}: Open RSS Menu.
-
-<b>Attention: Read the first line again!</b>
 '''
 
 @new_thread
@@ -369,10 +305,10 @@ async def main():
     bot.add_handler(MessageHandler(start,   filters=command(BotCommands.StartCommand)))
     bot.add_handler(MessageHandler(log,     filters=command(BotCommands.LogCommand)     & CustomFilters.sudo))
     bot.add_handler(MessageHandler(restart, filters=command(BotCommands.RestartCommand) & CustomFilters.sudo))
-    bot.add_handler(MessageHandler(ping,    filters=command(BotCommands.PingCommand)    & CustomFilters.authorized))
-    bot.add_handler(MessageHandler(bot_help,filters=command(BotCommands.HelpCommand)    & CustomFilters.authorized))
-    bot.add_handler(MessageHandler(stats,   filters=command(BotCommands.StatsCommand)   & CustomFilters.authorized))
-    bot.add_handler(MessageHandler(stats,   filters=command(BotCommands.StatsCommand)   & CustomFilters.authorized))
+    bot.add_handler(MessageHandler(ping,    filters=command(BotCommands.PingCommand)))
+    bot.add_handler(MessageHandler(bot_help,filters=command(BotCommands.HelpCommand)))
+    bot.add_handler(MessageHandler(stats,   filters=command(BotCommands.StatsCommand)))
+    bot.add_handler(MessageHandler(stats,   filters=command(BotCommands.StatsCommand)))
     bot.add_handler(CallbackQueryHandler(send_close_signal, filters=regex("^close_signal")))
     bot.add_handler(CallbackQueryHandler(send_bot_stats,    filters=regex("^show_bot_stats")))
     bot.add_handler(CallbackQueryHandler(send_sys_stats,    filters=regex("^show_sys_stats")))
